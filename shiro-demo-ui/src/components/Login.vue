@@ -2,7 +2,7 @@
   <div style="background-color: thistle">
     <el-input v-model="username" placeholder="用户名" size="medium" class="my_input"></el-input>
     <br>
-    <el-input v-model="password" placeholder="密码" size="medium" class="my_input"></el-input>
+    <el-input v-model="password" placeholder="密码" size="medium" class="my_input" show-password></el-input>
     <br>
     <br>
     <el-checkbox style="color: black;margin-right: 20px">记住我</el-checkbox>
@@ -21,7 +21,21 @@ export default {
   },
   methods: {
     doLogin () {
-      this.$router.push('/index')
+      debugger
+      let requestParam = {}
+      requestParam.username = this.username
+      requestParam.password = this.password
+      this.$axios.post('/login', requestParam)
+        .then(response => {
+          if (response.status === 200 && response.data.code === 200) {
+            localStorage.setItem('token', response.data)
+            localStorage.setItem('username', this.username)
+            this.$router.replace('/index')
+            // this.$router.push('/index')
+          } else {
+            this.$message.error(response.data.msg)
+          }
+        })
     }
   }
 }

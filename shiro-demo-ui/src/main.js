@@ -8,7 +8,12 @@ import router from './router'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 
+// 引入axios
+import { AXIOS } from './components/http-common'
+
 Vue.use(ElementUI)
+
+Vue.prototype.$axios = AXIOS
 
 Vue.config.productionTip = false
 
@@ -18,4 +23,20 @@ new Vue({
   router,
   components: {App},
   template: '<App/>'
+})
+
+// token验证
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requireLogin)) {
+    if (localStorage.getItem('token')) {
+      next()
+    } else {
+      next({
+        // 区分大小写
+        path: '/login'
+      })
+    }
+  } else {
+    next()
+  }
 })

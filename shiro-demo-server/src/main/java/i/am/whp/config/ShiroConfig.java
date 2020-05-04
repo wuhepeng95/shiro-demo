@@ -40,7 +40,7 @@ public class ShiroConfig {
 
         // 定义过滤链
         Map<String, String> definitions = new HashMap<>(8);
-        definitions.put("/login", "anon");
+        definitions.put("/api/login", "anon");
         definitions.put("/toLogin", "anon");
         definitions.put("/**", "authc");
         filterFactoryBean.setFilterChainDefinitionMap(definitions);

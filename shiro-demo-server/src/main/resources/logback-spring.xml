@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 <configuration>
-    <property name="LOG_FILE" value="dubbo-governance.log"/>
+    <property name="LOG_FILE" value="common.log"/>
     <property name="LOG_FILE_MAX_HISTORY" value="7"/>
 
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
