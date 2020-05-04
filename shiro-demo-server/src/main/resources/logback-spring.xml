@@ -35,7 +35,7 @@ limitations under the License.
         <appender-ref ref="CONSOLE"/>
     </appender>
 
-    <root level="DEBUG">
+    <root level="info">
         <appender-ref ref="CONSOLE-LOG-ASYNC"/>
         <appender-ref ref="FILE-LOG-ASYNC"/>
     </root>
