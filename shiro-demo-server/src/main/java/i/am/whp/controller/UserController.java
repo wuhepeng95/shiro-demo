@@ -1,13 +1,16 @@
 package i.am.whp.controller;
 
 import i.am.whp.bean.SimpleResponse;
-import i.am.whp.bean.UserLoginBean;
+import i.am.whp.bean.UserLoginRequest;
+import i.am.whp.bean.UserRegisterRequest;
 import i.am.whp.domain.User;
+import i.am.whp.service.UserService;
 import i.am.whp.validator.RequestValidate;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,10 +25,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api")
 @Slf4j
-public class LoginController {
+public class UserController {
+
+    @Autowired
+    private UserService userService;
+
+    @PostMapping("register")
+    public SimpleResponse register(@RequestBody UserRegisterRequest registerRequest) {
+        // 参数验证
+        RequestValidate.validateUserRegisterRequest(registerRequest);
+        // 用户注册
+        userService.registerUser(registerRequest);
+        return SimpleResponse.builder().code(HttpStatus.OK.value()).msg("注册成功").build();
+    }
 
     @PostMapping("login")
-    public SimpleResponse login(@RequestBody UserLoginBean loginParam) {
+    public SimpleResponse login(@RequestBody UserLoginRequest loginParam) {
         // 参数验证
         RequestValidate.validateUserLoginBean(loginParam);
 

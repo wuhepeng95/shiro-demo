@@ -67,6 +67,9 @@ export default {
     return {
       tableData: Array(20).fill(item)
     }
+  },
+  mounted () {
+    console.log('token:' + localStorage.getItem('token'))
   }
 }
 </script>

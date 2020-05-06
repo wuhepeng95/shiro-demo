@@ -1,6 +1,8 @@
 package i.am.whp.config;
 
 import i.am.whp.realm.UserRealm;
+import org.apache.shiro.authc.credential.CredentialsMatcher;
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.DefaultSecurityManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -41,6 +43,7 @@ public class ShiroConfig {
         // 定义过滤链
         Map<String, String> definitions = new HashMap<>(8);
         definitions.put("/api/login", "anon");
+        definitions.put("/api/register", "anon");
         definitions.put("/toLogin", "anon");
         definitions.put("/**", "authc");
         filterFactoryBean.setFilterChainDefinitionMap(definitions);
@@ -73,7 +76,14 @@ public class ShiroConfig {
      */
     @Bean("userRealm")
     public UserRealm userRealm() {
-        return new UserRealm();
+        UserRealm userRealm = new UserRealm();
+        HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
+        // hash方式
+        hashedCredentialsMatcher.setHashAlgorithmName("MD5");
+        // hash次数
+        hashedCredentialsMatcher.setHashIterations(5);
+        userRealm.setCredentialsMatcher(hashedCredentialsMatcher);
+        return userRealm;
     }
 
     @Bean("lifecycleBeanPostProcessor")

@@ -9,14 +9,15 @@ module.exports = {
 
     // Paths
     assetsSubDirectory: 'static',
+    // 项目名
     assetsPublicPath: '/',
     // 配置ProxyTable 实现跨域
     proxyTable: {
-      '/': {
+      '/api': {
         target: 'http://localhost:8080/',
         changeOrigin: true,
         pathRewrite: {
-          '^/': '/'
+          '^/api': '/api'
         }
       }
     },

@@ -1,5 +1,6 @@
 package i.am.whp.service;
 
+import i.am.whp.bean.UserRegisterRequest;
 import i.am.whp.domain.User;
 
 /**
@@ -22,4 +23,5 @@ public interface UserService {
 
     int updateByPrimaryKey(User record);
 
+    void registerUser(UserRegisterRequest registerRequest);
 }

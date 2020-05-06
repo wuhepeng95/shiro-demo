@@ -1,7 +1,7 @@
 package i.am.whp.aspect;
 
 import i.am.whp.bean.SimpleResponse;
-import i.am.whp.exception.ErrorParamException;
+import i.am.whp.exception.CommonException;
 import org.apache.shiro.ShiroException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -23,9 +23,9 @@ public class ControllerExceptionHandler {
         return SimpleResponse.builder().code(HttpStatus.INTERNAL_SERVER_ERROR.value()).msg(e.getMessage()).build();
     }
 
-    @ExceptionHandler(ErrorParamException.class)
+    @ExceptionHandler(CommonException.class)
     @ResponseBody
-    public SimpleResponse handleException(ErrorParamException e) {
+    public SimpleResponse handleException(CommonException e) {
         return SimpleResponse.builder().code(e.getErrorCode()).msg(e.getMessage()).build();
     }
 

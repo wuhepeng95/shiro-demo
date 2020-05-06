@@ -3,6 +3,7 @@ package i.am.whp.realm;
 import i.am.whp.domain.User;
 import i.am.whp.enums.UserStatusEnum;
 import i.am.whp.service.UserService;
+import i.am.whp.util.HashUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -15,6 +16,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -38,13 +40,17 @@ public class UserRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         log.info("doGetAuthenticationInfo认证");
         String username = authenticationToken.getPrincipal().toString();
+
         // 检查用户是否存在
         User user = userService.selectByUsername(username);
         if (user == null) {
-            throw new UnknownAccountException("Account [" + username + "] user is exist.");
+            throw new UnknownAccountException("Account [" + username + "] user is not exist.");
         }
         // 检查用户密码是否正确
         String password = new String(((UsernamePasswordToken) authenticationToken).getPassword());
+        // 获取加密的密码
+        String salt = HashUtil.getSaltByUsername(username);
+        password = HashUtil.getCryptPassword(password, salt);
         if (!password.equals(user.getPassword())) {
             throw new IncorrectCredentialsException("Account [" + username + "] password is error.");
         }
@@ -52,8 +58,9 @@ public class UserRealm extends AuthorizingRealm {
         if (user.getStatus() != UserStatusEnum.enable) {
             throw new LockedAccountException("Account [" + username + "] is locked.");
         }
+
         // 返回token
-        return new SimpleAuthenticationInfo(username, password, getName());
+        return new SimpleAuthenticationInfo(username, password, ByteSource.Util.bytes(salt), getName());
     }
 
     @Override

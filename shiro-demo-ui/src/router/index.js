@@ -17,11 +17,19 @@ export default new Router({
       }
     },
     {
-      path: '/',
+      path: '/index',
       // name: 'index',
       component: Index,
       meta: {
         requireLogin: true
+      }
+    },
+    {
+      path: '/',
+      // name: 'index',
+      component: Login,
+      meta: {
+        requireLogin: false
       }
     }
   ]
