@@ -1,72 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="i.am.whp.dao.RolePermissionRelationMapper">
-  <resultMap id="BaseResultMap" type="i.am.whp.domain.RolePermissionRelation">
-    <!--@mbg.generated-->
-    <!--@Table role_permission_relation-->
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="role_id" jdbcType="INTEGER" property="roleId" />
-    <result column="permission_id" jdbcType="INTEGER" property="permissionId" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    <!--@mbg.generated-->
-    id, role_id, permission_id
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    <!--@mbg.generated-->
-    select 
-    <include refid="Base_Column_List" />
-    from role_permission_relation
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    <!--@mbg.generated-->
-    delete from role_permission_relation
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="i.am.whp.domain.RolePermissionRelation" useGeneratedKeys="true">
-    <!--@mbg.generated-->
-    insert into role_permission_relation (role_id, permission_id)
-    values (#{roleId,jdbcType=INTEGER}, #{permissionId,jdbcType=INTEGER})
-  </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="i.am.whp.domain.RolePermissionRelation" useGeneratedKeys="true">
-    <!--@mbg.generated-->
-    insert into role_permission_relation
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="roleId != null">
-        role_id,
-      </if>
-      <if test="permissionId != null">
-        permission_id,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="roleId != null">
-        #{roleId,jdbcType=INTEGER},
-      </if>
-      <if test="permissionId != null">
-        #{permissionId,jdbcType=INTEGER},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="i.am.whp.domain.RolePermissionRelation">
-    <!--@mbg.generated-->
-    update role_permission_relation
-    <set>
-      <if test="roleId != null">
-        role_id = #{roleId,jdbcType=INTEGER},
-      </if>
-      <if test="permissionId != null">
-        permission_id = #{permissionId,jdbcType=INTEGER},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="i.am.whp.domain.RolePermissionRelation">
-    <!--@mbg.generated-->
-    update role_permission_relation
-    set role_id = #{roleId,jdbcType=INTEGER},
-      permission_id = #{permissionId,jdbcType=INTEGER}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+    <resultMap id="BaseResultMap" type="i.am.whp.domain.RolePermissionRelation">
+        <!--@mbg.generated-->
+        <!--@Table role_permission_relation-->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="role_id" jdbcType="INTEGER" property="roleId"/>
+        <result column="permission_id" jdbcType="INTEGER" property="permissionId"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, role_id, permission_id
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+        select
+        <include refid="Base_Column_List"/>
+        from role_permission_relation
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        <!--@mbg.generated-->
+        delete from role_permission_relation
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="i.am.whp.domain.RolePermissionRelation"
+            useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into role_permission_relation (role_id, permission_id)
+        values (#{roleId,jdbcType=INTEGER}, #{permissionId,jdbcType=INTEGER})
+    </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="i.am.whp.domain.RolePermissionRelation"
+            useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into role_permission_relation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="roleId != null">
+                role_id,
+            </if>
+            <if test="permissionId != null">
+                permission_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="roleId != null">
+                #{roleId,jdbcType=INTEGER},
+            </if>
+            <if test="permissionId != null">
+                #{permissionId,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="i.am.whp.domain.RolePermissionRelation">
+        <!--@mbg.generated-->
+        update role_permission_relation
+        <set>
+            <if test="roleId != null">
+                role_id = #{roleId,jdbcType=INTEGER},
+            </if>
+            <if test="permissionId != null">
+                permission_id = #{permissionId,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="i.am.whp.domain.RolePermissionRelation">
+        <!--@mbg.generated-->
+        update role_permission_relation
+        set role_id = #{roleId,jdbcType=INTEGER},
+        permission_id = #{permissionId,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <select id="selectByRoleIds" resultMap="BaseResultMap" parameterType="java.util.List">
+        select
+        <include refid="Base_Column_List"/>
+        from role_permission_relation
+        where role_id in
+        <foreach collection="roleIds" item="roleId" open="(" close=")">
+            #{roleId}
+        </foreach>
+    </select>
 </mapper>

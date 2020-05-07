@@ -1,6 +1,9 @@
 package i.am.whp.dao;
 
 import i.am.whp.domain.UserRoleRelation;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * @author wuhepeng
@@ -13,7 +16,7 @@ public interface UserRoleRelationMapper {
 
     int insertSelective(UserRoleRelation record);
 
-    UserRoleRelation selectByPrimaryKey(Integer id);
+    List<UserRoleRelation> selectByUserId(@Param("userId") Long userId);
 
     int updateByPrimaryKeySelective(UserRoleRelation record);
 

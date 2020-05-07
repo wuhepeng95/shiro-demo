@@ -9,6 +9,9 @@ import i.am.whp.validator.RequestValidate;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -56,6 +59,8 @@ public class UserController {
     }
 
     @RequestMapping("/admin/login")
+    @RequiresPermissions(value = { "write"})
+    @RequiresRoles(value = {"admin"})
     public String adminLogin() {
         return "ok";
     }
@@ -63,11 +68,12 @@ public class UserController {
     /**
      * 退出登录
      */
-    @GetMapping(value = "/logOut")
-    public String logOut() {
+    @GetMapping(value = "/logout")
+    public String logout() {
         Subject subject = SecurityUtils.getSubject();
-        User user = (User) subject.getPrincipal();
         subject.logout();
+
+        User user = (User) subject.getPrincipal();
         log.info("用户[{}]退出登录", user.getUsername());
         return "redirect:http://127.0.0.1:8081";
     }

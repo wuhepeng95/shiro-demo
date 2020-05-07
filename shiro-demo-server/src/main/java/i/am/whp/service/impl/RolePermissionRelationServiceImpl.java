@@ -3,9 +3,12 @@ package i.am.whp.service.impl;
 import i.am.whp.dao.RolePermissionRelationMapper;
 import i.am.whp.domain.RolePermissionRelation;
 import i.am.whp.service.RolePermissionRelationService;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author wuhepeng
@@ -35,6 +38,14 @@ public class RolePermissionRelationServiceImpl implements RolePermissionRelation
     @Override
     public RolePermissionRelation selectByPrimaryKey(Integer id) {
         return rolePermissionRelationMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public List<RolePermissionRelation> selectByRoleIds(List<Integer> roleIds) {
+        if (CollectionUtils.isEmpty(roleIds)) {
+            return new ArrayList<>();
+        }
+        return rolePermissionRelationMapper.selectByRoleIds(roleIds);
     }
 
     @Override

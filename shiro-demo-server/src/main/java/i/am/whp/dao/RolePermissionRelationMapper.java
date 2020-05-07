@@ -1,6 +1,9 @@
 package i.am.whp.dao;
 
 import i.am.whp.domain.RolePermissionRelation;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * @author wuhepeng
@@ -18,4 +21,6 @@ public interface RolePermissionRelationMapper {
     int updateByPrimaryKeySelective(RolePermissionRelation record);
 
     int updateByPrimaryKey(RolePermissionRelation record);
+
+    List<RolePermissionRelation> selectByRoleIds(@Param("roleIds") List<Integer> roleIds);
 }

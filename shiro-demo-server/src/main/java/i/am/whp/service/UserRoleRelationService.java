@@ -2,6 +2,8 @@ package i.am.whp.service;
 
 import i.am.whp.domain.UserRoleRelation;
 
+import java.util.List;
+
 /**
  * @author wuhepeng
  * @date 2020/5/4
@@ -14,7 +16,7 @@ public interface UserRoleRelationService {
 
     int insertSelective(UserRoleRelation record);
 
-    UserRoleRelation selectByPrimaryKey(Integer id);
+    List<UserRoleRelation> selectByUserId(Long userId);
 
     int updateByPrimaryKeySelective(UserRoleRelation record);
 

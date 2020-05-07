@@ -31,6 +31,7 @@ router.beforeEach((to, from, next) => {
     if (localStorage.getItem('token')) {
       next()
     } else {
+      console.log('无token 未登录')
       next({
         // 区分大小写
         path: '/login'

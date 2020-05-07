@@ -21,7 +21,7 @@ public class UserRoleRelation implements Serializable {
     /**
      * 用户id
      */
-    private Integer userId;
+    private Long userId;
 
     /**
      * 角色id

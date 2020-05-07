@@ -6,6 +6,7 @@ import i.am.whp.service.UserRoleRelationService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author wuhepeng
@@ -33,8 +34,8 @@ public class UserRoleRelationServiceImpl implements UserRoleRelationService {
     }
 
     @Override
-    public UserRoleRelation selectByPrimaryKey(Integer id) {
-        return userRoleRelationMapper.selectByPrimaryKey(id);
+    public List<UserRoleRelation> selectByUserId(Long userId) {
+        return userRoleRelationMapper.selectByUserId(userId);
     }
 
     @Override
