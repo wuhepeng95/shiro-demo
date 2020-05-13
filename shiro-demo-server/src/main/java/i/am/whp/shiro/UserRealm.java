@@ -1,4 +1,4 @@
-package i.am.whp.realm;
+package i.am.whp.shiro;
 
 import i.am.whp.domain.RolePermissionRelation;
 import i.am.whp.domain.User;
@@ -26,7 +26,6 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;

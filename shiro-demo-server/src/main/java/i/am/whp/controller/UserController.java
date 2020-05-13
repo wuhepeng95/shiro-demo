@@ -3,13 +3,11 @@ package i.am.whp.controller;
 import i.am.whp.bean.SimpleResponse;
 import i.am.whp.bean.UserLoginRequest;
 import i.am.whp.bean.UserRegisterRequest;
-import i.am.whp.domain.User;
 import i.am.whp.service.UserService;
 import i.am.whp.validator.RequestValidate;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
@@ -19,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -59,7 +58,7 @@ public class UserController {
     }
 
     @RequestMapping("/admin/login")
-    @RequiresPermissions(value = { "write"})
+    @RequiresPermissions(value = {"write"})
     @RequiresRoles(value = {"admin"})
     public String adminLogin() {
         return "ok";
@@ -69,13 +68,12 @@ public class UserController {
      * 退出登录
      */
     @GetMapping(value = "/logout")
-    public String logout() {
+    @ResponseBody
+    public SimpleResponse logout() {
         Subject subject = SecurityUtils.getSubject();
+        Object principal = subject.getPrincipal();
+        log.info("用户[{}]退出登录", principal.toString());
         subject.logout();
-
-        User user = (User) subject.getPrincipal();
-        log.info("用户[{}]退出登录", user.getUsername());
-        return "redirect:http://127.0.0.1:8081";
+        return SimpleResponse.builder().code(HttpStatus.INTERNAL_SERVER_ERROR.value()).msg("退出成功").build();
     }
-
 }

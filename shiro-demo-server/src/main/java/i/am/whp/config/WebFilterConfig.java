@@ -11,7 +11,7 @@
 // * @date 2020/5/3
 // */
 //@Configuration
-//public class WebFilterConfig {
+//public class WebFilterConfig { //使用springboot 这里为什么不需要配置了？
 //
 ////<filter>
 ////    <filter-name>shiroFilter</filter-name>
