@@ -8,8 +8,6 @@ import i.am.whp.service.UserService;
 import i.am.whp.validator.RequestValidate;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
@@ -20,6 +18,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author wuhepeng
@@ -43,23 +44,30 @@ public class UserController {
     }
 
     @PostMapping("login")
-    public SimpleResponse login(@RequestBody UserLoginRequest loginParam) {
+    public Map<String, Object> login(@RequestBody UserLoginRequest loginParam) {
         // 参数验证
         RequestValidate.validateUserLoginBean(loginParam);
 
-        Subject subject = SecurityUtils.getSubject();
-        UsernamePasswordToken token = new UsernamePasswordToken(loginParam.getUsername(), loginParam.getPassword());
-        subject.login(token);
-        if (subject.isAuthenticated()) {
-            //登录成功，修改登录错误次数为0
-            log.info("用户登录成功：用户名：{}", subject.getPrincipal());
-            return SimpleResponse.builder().code(HttpStatus.OK.value()).msg("登录成功").build();
-        }
-        return SimpleResponse.builder().code(HttpStatus.INTERNAL_SERVER_ERROR.value()).msg("登录失败").build();
+//        Subject subject = SecurityUtils.getSubject();
+//        UsernamePasswordToken token = new UsernamePasswordToken(loginParam.getUsername(), loginParam.getPassword());
+//        subject.login(token);
+//        if (subject.isAuthenticated()) {
+//            //登录成功，修改登录错误次数为0
+//            log.info("用户登录成功：用户名：{}", subject.getPrincipal());
+//            return SimpleResponse.builder().code(HttpStatus.OK.value()).msg("登录成功").build();
+//        }
+//        return SimpleResponse.builder().code(HttpStatus.OK.value()).msg("登录成功").build();
+
+        String token = userService.login(loginParam);
+        Map<String, Object> response = new HashMap<>(3);
+        response.put("code", 200);
+        response.put("msg", "登录成功");
+        response.put("token", token);
+        return response;
     }
 
     @RequestMapping("/admin/login")
-    @RequiresPermissions(value = { "write"})
+    @RequiresPermissions(value = {"write"})
     @RequiresRoles(value = {"admin"})
     public String adminLogin() {
         return "ok";
@@ -71,10 +79,8 @@ public class UserController {
     @GetMapping(value = "/logout")
     public String logout() {
         Subject subject = SecurityUtils.getSubject();
+        log.info("用户[{}]退出登录", subject.getPrincipal().toString());
         subject.logout();
-
-        User user = (User) subject.getPrincipal();
-        log.info("用户[{}]退出登录", user.getUsername());
         return "redirect:http://127.0.0.1:8081";
     }
 

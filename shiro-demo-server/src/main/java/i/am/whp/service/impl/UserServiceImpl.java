@@ -1,5 +1,6 @@
 package i.am.whp.service.impl;
 
+import i.am.whp.bean.UserLoginRequest;
 import i.am.whp.bean.UserRegisterRequest;
 import i.am.whp.dao.UserMapper;
 import i.am.whp.domain.User;
@@ -7,6 +8,11 @@ import i.am.whp.enums.UserStatusEnum;
 import i.am.whp.exception.CommonException;
 import i.am.whp.service.UserService;
 import i.am.whp.util.HashUtil;
+import i.am.whp.util.JwtUtil;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.LockedAccountException;
+import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.UsernamePasswordToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -83,6 +89,29 @@ public class UserServiceImpl implements UserService {
         newUser.setUpdateTime(new Date());
 
         self.insert(newUser);
+    }
+
+    @Override
+    public String login(UserLoginRequest registerRequest) {
+        String username = registerRequest.getUsername();
+        // 检查用户是否存在
+        User user = selectByUsername(username);
+        if (user == null) {
+            throw new UnknownAccountException("Account [" + username + "] user is not exist.");
+        }
+        // 检查用户密码是否正确
+        String password =registerRequest.getPassword();
+        // 获取加密的密码
+        String salt = HashUtil.getSaltByUsername(username);
+        password = HashUtil.getCryptPassword(password, salt);
+        if (!password.equals(user.getPassword())) {
+            throw new IncorrectCredentialsException("Account [" + username + "] password is error.");
+        }
+        // 检查用户状态
+        if (user.getStatus() != UserStatusEnum.enable) {
+            throw new LockedAccountException("Account [" + username + "] is locked.");
+        }
+        return JwtUtil.createToken(username);
     }
 
 }
